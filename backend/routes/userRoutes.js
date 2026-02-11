@@ -1,6 +1,7 @@
 const express = require('express');
 const userModel = require('../models/user.js');
-const app = express();
+const app = express.Router();
+const {query} = require('express-validator')
 
 app.post('/user/signup', async (req, res) => {
   
@@ -15,7 +16,7 @@ app.post('/user/signup', async (req, res) => {
     }
   });
 
-userRoutes.post('/user/login',query('password').notEmpty(),async(req,res)=>{
+app.post('/user/login',query('password').notEmpty(),async(req,res)=>{
     try {
         const user = await userModel.findOne({username: req.body.username}).select('+password');
         if (!user) {
@@ -45,4 +46,15 @@ userRoutes.post('/user/login',query('password').notEmpty(),async(req,res)=>{
     }
 });
 
-module.exports = userRoutes;
+app.get('/user/users', async (req, res) => {
+    try {
+        const user = await userModel.find();
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Some error occurred while retrieving users."
+        });
+    }
+});
+
+module.exports = app;

@@ -6,7 +6,9 @@ const groupMessageRouter = require('./routes/groupMessageRoutes.js')
 const SERVER_PORT = process.env.PORT || 3000;
 
 const app = express();
+
 app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }))
 
 const DB_NAME = "db_comp3133_employee"
 const DB_USER_NAME = 'nguyensteven578_db_user'

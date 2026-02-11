@@ -14,3 +14,5 @@ app.post('/userMessage', async (req, res) => {
       res.status(500).send(err);
     }
   });
+
+module.exports = app;

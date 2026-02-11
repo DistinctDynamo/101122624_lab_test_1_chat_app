@@ -16,10 +16,8 @@ const userMessageSchema = new mongoose.Schema({
 })
 
 userMessageSchema.pre('save', () => {
-  let date_sent = Date.now()
-
   if (!this.date_sent) {
-    this.date_sent = now
+    this.date_sent = Date.now()
   }
 });
 
