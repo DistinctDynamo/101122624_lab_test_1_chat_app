@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router";
-const express = require('express');
-const app = express();
 
 export default function Login(){
     const navigate = useNavigate();
@@ -17,8 +15,7 @@ export default function Login(){
 
     const [formData, setFormData] = useState({
         username:'',
-        email:'',
-        password:'',
+        password:''
     });
 
     const handleChange = (event)=>{
@@ -29,16 +26,24 @@ export default function Login(){
         }));
     };
 
-    const handleSubmit = (event)=>{
+    const handleSubmit = async (event)=>{
         event.preventDefault();
+
         const userData={
             username: formData.username,
             email: formData.email,
             password: formData.password
         }
-        app.post('http://localhost:3000/user/login',userData)
+
+        await fetch('http://localhost:3133/user/login',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        })
         .then((response)=>{
-            console.log(response.status, response.data.token);
+            console.log(response.status);
         }).then(
            localStorage.setItem('LoggedIn','True')
         ).then(
@@ -66,17 +71,6 @@ export default function Login(){
                 required
                 />
 
-                <label htmlFor='email'>Email:</label>
-                <input
-                id="email"
-                name='email'
-                type='text'
-                 value={formData.email}
-                onChange={handleChange}
-                placeholder='JaneDoe@123.gmail.com'
-                required
-                />
-
                     <label htmlFor='password'>Password:</label>
                     <input
                     id="password"
@@ -89,7 +83,7 @@ export default function Login(){
                     />
 
                     {
-                      loggedInStatus() ? <p>You are already logged in</p>
+                      loggedInStatus() ? <p>You are already logged in</p> 
                       :<button type='submit' className='login button'>
                       Login
                       </button>

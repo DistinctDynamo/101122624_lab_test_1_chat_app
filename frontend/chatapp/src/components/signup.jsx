@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router";
-const express = require('express');
-const app = express();
 
 export default function Signup(){
     const navigate = useNavigate();
@@ -30,8 +28,13 @@ export default function Signup(){
             last_name: formData.last_name,
             password: formData.password
         }  
-        app.post('http://localhost:3000/user/signup',userData
-        ).then(
+        fetch('http://localhost:3133/user/signup',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        }).then(
             navigate('/login')
         )
         .catch(error=>{

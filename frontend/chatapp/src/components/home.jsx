@@ -1,32 +1,35 @@
 import { useNavigate } from "react-router";
-import Chatbox from './groupchatroom';
+import { useState,useEffect } from 'react';
+import GroupChat from "./groupchatroom";
 
-export default function home(){
+export default function Home(){
     const navigate = useNavigate();
+    const [ room, setRoom ] = useState("");
 
     const loggedIn = localStorage.getItem('LoggedIn')
-
-    const [openModal, setOpenModal] = useState(
-        {
-            state:false,
-            id:""
-        });
 
     const logOut=()=>{
         navigate("/login")
         localStorage.setItem('LoggedIn',"False")
     };
 
-    const openChatBox = () => {
-          {openModal.state && <Chatbox room={openModal.id} setModalOpen={setOpenModal} />}
+    const openChatBox =(event)=>{
+        event.preventDefault();
+        navigate("/groupChat", { state: { currRoom: room } })
     }
 
-    if (loggedIn == true){
+    const handleChange = (event) =>{
+        setRoom(event.target.value)
+    }
+
+    <GroupChat currRoom={room}/>
+
+    if (loggedIn === "True"){
         return(
             <div>
                 <form onSubmit={openChatBox}>
                     <label for="room">Choose a Room:</label>
-                    <select id="room" name="room">
+                    <select value={room} name="room" onChange={handleChange}>
                     <option value="Gbc">Gbc</option>
                     <option value="Card Games">Card Games</option>
                     <option value="Sports">Sports</option>
@@ -36,14 +39,14 @@ export default function home(){
 
                     <input type="submit"></input>
                 </form>
-
+                <p>{room}</p>
                 <button onClick={logOut}>LogOut</button>
+                
             </div>
         )
     }else{
         navigate("/login")
         localStorage.setItem('LoggedIn','False')
     }
-  
 }
 

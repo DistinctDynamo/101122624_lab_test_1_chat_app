@@ -1,19 +1,14 @@
-import { useState,useEffect } from 'react';
+import React from 'react';
+import { useLocation } from "react-router";
 
-export default function chatbox({room,setModalOpen}){
-     const [ room, setRoom ] = useState({});
+export default function GroupChat(){
+    const location = useLocation();
+    const { currRoom } = location.state || {};
 
-     return(
+    return(
         <div>
-        <p>${room}</p>
+            <p>{currRoom || "No room selected"}</p>
 
-        <button
-            onClick={() => {
-            setModalOpen ({ state: false, id: "" });
-            }}>
-            Cancel
-        </button>
         </div>
-        
-     )
+    );
 }
