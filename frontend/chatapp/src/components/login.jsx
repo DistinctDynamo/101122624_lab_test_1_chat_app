@@ -66,16 +66,16 @@ export default function Login(){
                 required
                 />
 
-                    <label htmlFor='email'>Email:</label>
-                    <input
-                    id="email"
-                    name='email'
-                    type='text'
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder='JaneDoe@123.gmail.com'
-                    required
-                    />
+                <label htmlFor='email'>Email:</label>
+                <input
+                id="email"
+                name='email'
+                type='text'
+                 value={formData.email}
+                onChange={handleChange}
+                placeholder='JaneDoe@123.gmail.com'
+                required
+                />
 
                     <label htmlFor='password'>Password:</label>
                     <input
@@ -89,12 +89,11 @@ export default function Login(){
                     />
 
                     {
-                        loggedInStatus() ? <p>You are already logged in</p>
-                        :<button type='submit' className='login button'>
-                        Login
-                        </button>
+                      loggedInStatus() ? <p>You are already logged in</p>
+                      :<button type='submit' className='login button'>
+                      Login
+                      </button>
                     }
-                    
                     </form>
         </div>
     )

@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const iosocket = require('socket.io')
 const userRouter = require('./routes/userRoutes.js');
 const userMessageRouter = require('./routes/userMessageRoutes.js')
 const groupMessageRouter = require('./routes/groupMessageRoutes.js')
@@ -24,7 +25,7 @@ app.use(userRouter);
 app.use(userMessageRouter);
 app.use(groupMessageRouter);
 
-app.listen(SERVER_PORT, () => { 
+const appServer = app.listen(SERVER_PORT, () => { 
   console.log('Server is running...') 
   try {
     connectToMongoDB(DB_CONNECTION);
@@ -33,3 +34,7 @@ app.listen(SERVER_PORT, () => {
     console.error("Error connecting to MongoDB:", error);
   }
 });
+
+const ioServer = iosocket(appServer)
+
+

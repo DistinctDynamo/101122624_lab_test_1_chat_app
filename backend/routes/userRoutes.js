@@ -46,15 +46,4 @@ app.post('/user/login',query('password').notEmpty(),async(req,res)=>{
     }
 });
 
-app.get('/user/users', async (req, res) => {
-    try {
-        const user = await userModel.find();
-        res.status(200).send(user);
-    } catch (error) {
-        res.status(500).send({
-            message: error.message || "Some error occurred while retrieving users."
-        });
-    }
-});
-
 module.exports = app;
