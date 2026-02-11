@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/userRoutes.js');
+const userMessageRouter = require('./routes/userMessageRoutes.js')
+const groupMessageRouter = require('./routes/groupMessageRoutes.js')
 const SERVER_PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -17,6 +19,8 @@ async function connectToMongoDB(connectionString = DB_CONNECTION) {
 }
 
 app.use(userRouter);
+app.use(userMessageRouter);
+app.use(groupMessageRouter);
 
 app.listen(SERVER_PORT, () => { 
   console.log('Server is running...') 
