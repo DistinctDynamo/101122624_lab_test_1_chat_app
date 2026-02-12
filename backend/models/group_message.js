@@ -5,14 +5,14 @@ const groupMessageSchema = new mongoose.Schema({
         type: String
     },
     room:{
-        type: String,
-        enum: ["Gbc", "Card games", "Sports", "Pets", "Food"]
+        type: String
     },
     message:{
         type: String
     },
     date_sent:{
-        type: Date
+        type: Date,
+        default: Date.now()
     }
 })
 
