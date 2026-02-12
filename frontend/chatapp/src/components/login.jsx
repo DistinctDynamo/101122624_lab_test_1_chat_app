@@ -45,7 +45,8 @@ export default function Login(){
         .then((response)=>{
             console.log(response.status);
         }).then(
-           localStorage.setItem('LoggedIn','True')
+           localStorage.setItem('LoggedIn','True'),
+           localStorage.setItem('User', {username})
         ).then(
             navigate('/home')
         ).catch(error=>{

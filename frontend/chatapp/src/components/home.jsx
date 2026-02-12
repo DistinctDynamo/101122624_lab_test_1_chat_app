@@ -5,8 +5,21 @@ import GroupChat from "./groupchatroom";
 export default function Home(){
     const navigate = useNavigate();
     const [ room, setRoom ] = useState("");
-
+    const clientIo=io();
     const loggedIn = localStorage.getItem('LoggedIn')
+
+    useEffect(() => {
+    const script = document.createElement('script');
+
+    script.src = "/socket.io/socket.io.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+        document.body.removeChild(script);
+    }
+    }, []);
 
     const logOut=()=>{
         navigate("/login")
@@ -15,6 +28,7 @@ export default function Home(){
 
     const openChatBox =(event)=>{
         event.preventDefault();
+        clientIO.emit('join-group',currRoom);
         navigate("/groupChat", { state: { currRoom: room } })
     }
 
@@ -37,7 +51,7 @@ export default function Home(){
                     <option value="Food">Food</option>
                     </select>
 
-                    <input type="submit"></input>
+                    <input type="submit">Join group</input>
                 </form>
                 <p>{room}</p>
                 <button onClick={logOut}>LogOut</button>
