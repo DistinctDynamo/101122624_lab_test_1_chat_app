@@ -1,25 +1,13 @@
 import { useNavigate } from "react-router";
-import { useState,useEffect } from 'react';
-import GroupChat from "./groupchatroom";
+import { useState } from 'react';
+import { useLocation } from "react-router";
 
 export default function Home(){
     const navigate = useNavigate();
+    const location = useLocation();
     const [ room, setRoom ] = useState("");
-    const clientIo=io();
+    const { user } = location.state || {};
     const loggedIn = localStorage.getItem('LoggedIn')
-
-    useEffect(() => {
-    const script = document.createElement('script');
-
-    script.src = "/socket.io/socket.io.js";
-    script.async = true;
-
-    document.body.appendChild(script);
-
-    return () => {
-        document.body.removeChild(script);
-    }
-    }, []);
 
     const logOut=()=>{
         navigate("/login")
@@ -28,22 +16,19 @@ export default function Home(){
 
     const openChatBox =(event)=>{
         event.preventDefault();
-        clientIO.emit('join-group',currRoom);
-        navigate("/groupChat", { state: { currRoom: room } })
+        navigate("/groupChat", { state: { currRoom: room, user: user } })
     }
 
-    const handleChange = (event) =>{
-        setRoom(event.target.value)
+    const handleSubmit = (event) =>{
+       setRoom(event.target.value)
     }
-
-    <GroupChat currRoom={room}/>
 
     if (loggedIn === "True"){
         return(
             <div>
                 <form onSubmit={openChatBox}>
                     <label for="room">Choose a Room:</label>
-                    <select value={room} name="room" onChange={handleChange}>
+                    <select value={room} name="room" onChange={handleSubmit}>
                     <option value="Gbc">Gbc</option>
                     <option value="Card Games">Card Games</option>
                     <option value="Sports">Sports</option>
@@ -51,11 +36,10 @@ export default function Home(){
                     <option value="Food">Food</option>
                     </select>
 
-                    <input type="submit">Join group</input>
+                    <input type="submit"></input>
                 </form>
                 <p>{room}</p>
                 <button onClick={logOut}>LogOut</button>
-                
             </div>
         )
     }else{

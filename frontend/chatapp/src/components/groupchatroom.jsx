@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
 
+
 export default function GroupChat(){
+    const navigate = useNavigate();
     const location = useLocation();
-    const user = localStorage.getItem('User')
-    const { currRoom } = location.state || {};
-    const clientIo = io();
+    const { currRoom, user } = location.state || {};
 
     const [ formData, setFormData ] = useState({
         message:''
@@ -21,10 +21,10 @@ export default function GroupChat(){
         }));
     };
 
-    const postMessage = async(event) =>{
+    const handleSubmit = async(event) =>{
         event.preventDefault();
 
-        const messageData ={
+        const messageData = {
             from_user: user,
             room: currRoom,
             message: formData.message
@@ -36,24 +36,23 @@ export default function GroupChat(){
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(messageData)
+        }).then((response)=>{
+            console.log(response.status);
+        }).catch(error=>{
+            alert(error)
         })
-
-        clientIo.emit('message',formData.message)
     }
 
-    const leaveGroup = () =>{
-        clientIO.emit('leave-group',currRoom),
+    const leaveGroup = ()=>{
         navigate('/home')
     }
-    
+
     return(
-        
         <div>
             <h1>{currRoom || "No room selected"}</h1>
-            
-            <form onSubmit={postMessage}>
-            <label htmlFor='message'>Message:</label>
 
+            <form onSubmit={handleSubmit}>
+            <label htmlFor='message'>Message:</label>
             <input
               id="message"
               name='message'
@@ -61,11 +60,10 @@ export default function GroupChat(){
               value={formData.message}
               onChange={handleChange}
             />
-
             <button type='submit'>Post</button>
-            <button onClick={leaveGroup()}>Leave Group</button>
             </form>
-        
+
+        <button onClick={leaveGroup}>Leave Group</button>
         </div>
     );
 }

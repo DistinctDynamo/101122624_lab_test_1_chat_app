@@ -46,9 +46,8 @@ export default function Login(){
             console.log(response.status);
         }).then(
            localStorage.setItem('LoggedIn','True'),
-           localStorage.setItem('User', {username})
         ).then(
-            navigate('/home')
+            navigate('/home', { state: { user:formData.username } })
         ).catch(error=>{
             alert(error)
         })
